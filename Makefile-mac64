@@ -6,7 +6,7 @@ OS32_64 =
 # Location where CGAL shared libraries can be found for linking
 CGALHEADER = $(HOME)/local/CGAL/3.8/include
 BOOSTHEADER = /usr/local/include
-INCHEAD = -I$(CGALHEADER) -I$(BOOSTHEADER)
+INCHEAD = -I. -I$(CGALHEADER) -I$(BOOSTHEADER)
 
 # Location where CGAL shared libraries can be found for linking
 CGALLIBS=$(HOME)/local/CGAL/3.8/lib
@@ -18,8 +18,8 @@ MACSDK=
 
 # Paths to CGAL and boost headers
 #LDFLAGS=-lCGAL -lgmp -lmpfr -lboost_thread
-LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a $(GMPLIBS)/libgmp.a \
-	$(BOOSTLIBS)/libboost_thread.a $(LIBPTHREAD)
+LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a \
+	$(GMPLIBS)/libgmp.a $(BOOSTLIBS)/libboost_thread.a $(LIBPTHREAD)
 
 # Necessary compiler flags (g++)
 CXXFLAGS=$(MACSDK) -Wall -fno-common -O3 \
@@ -34,12 +34,13 @@ RPATHSETTING =
 
 
 CXXFLAGS += $(INCHEAD)
-mac: make_tetmesh_refine_sphere.o
-	$(CXX) make_tetmesh_refine_sphere.o -o make_tetmesh_refine_sphere-mac64.exe \
+mac64: make_tetmesh_refine_sphere.o vector.o
+	$(CXX) make_tetmesh_refine_sphere.o vector.o -o make_tetmesh_refine_sphere-mac64.exe \
 	       -L$(CGALLIBS) -Wl,-search_paths_first \
 	       $(LDFLAGS) $(RPATHSETTING)
 clean:
-	rm make_tetmesh_refine_sphere.exe make_tetmesh_refine_sphere.o	
+	rm make_tetmesh_refine_sphere-mac64.exe make_tetmesh_refine_sphere.o \
+	    vector.o	
 	
 .cpp$(OBJ_EXT):
 	$(CXX) $(CXXFLAGS) $<

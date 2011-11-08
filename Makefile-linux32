@@ -4,13 +4,12 @@ OS32_64 =
 # Required libraries
 
 # Location where CGAL shared libraries can be found for linking
-CGALLIBS=$(HOME)/Dropbox/Research/wip/xiao/Release/lib$(OS32_64)/darwin
-CGALHEADER = $(HOME)/local/include
-BOOSTHEADER = /usr/include
-INCHEAD = -I$(CGALHEADER) -I$(BOOSTHEADER)
+CGALHEADER = $(HOME)/local/CGAL/3.8/include
+BOOSTHEADER = /usr/local/include
+INCHEAD = -I. -I$(CGALHEADER) -I$(BOOSTHEADER)
 
 # Location where CGAL shared libraries can be found for linking
-CGALLIBS=$(HOME)/local/lib
+CGALLIBS=$(HOME)/local/CGAL/3.8/lib
 GMPLIBS=/usr/lib
 BOOSTLIBS=/usr/lib
 LIBPTHREAD=-lpthread
@@ -36,12 +35,13 @@ RPATHSETTING =
 
 
 CXXFLAGS += $(INCHEAD)
-mac: make_mesh_cgal_tetra.o
-	$(CXX) make_mesh_cgal_tetra.o -o make_mesh_cgal_tetra-linux32.exe \
+linux32: make_tetmesh_refine_sphere.o vector.o
+	$(CXX) make_tetmesh_refine_sphere.o vector.o -o make_tetmesh_refine_sphere-linux32.exe \
 	       -L$(CGALLIBS) \
 	       $(LDFLAGS) $(RPATHSETTING)
 clean:
-	rm make_mesh_cgal_tetra-linux32.exe make_mesh_cgal_tetra.o
+	rm make_tetmesh_refine_sphere-linux32.exe make_tetmesh_refine_sphere.o \
+	    vector.o
 	
 .cpp$(OBJ_EXT):
 	$(CXX) $(CXXFLAGS) $<

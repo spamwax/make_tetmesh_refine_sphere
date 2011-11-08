@@ -1,3 +1,4 @@
+*.exe
 .goutputstream-5DJB3V
 CMakeCache.txt
 criteria.txt
@@ -6,4 +7,6 @@ make_tetmesh_refine_sphere.o
 out.mesh
 out1.mesh
 voidelements.txt
-
+*.*~
+*~
+*.o
