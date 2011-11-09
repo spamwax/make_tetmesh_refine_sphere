@@ -17,7 +17,7 @@ MACSDK=-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5
 MACSDK=
 
 # Paths to CGAL and boost headers
-#LDFLAGS=-lCGAL -lgmp -lmpfr -lboost_thread
+# LDFLAGS=-lCGAL -lgmp -lmpfr -lboost_thread
 LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a \
 	$(GMPLIBS)/libgmp.a $(BOOSTLIBS)/libboost_thread.a $(LIBPTHREAD)
 

@@ -73,28 +73,41 @@ struct Spherical_sizing_field2
     typedef Mesh_domain::Index Index;
 //  double x, y, z;
     double r, ref_ratio, def_size;
-
+    double R1, R2, S1, S2;
+    
     double A[3], B[3];
 
     FT operator()(const Point_3& p, const int, const Index&) const
     {
-      // FT sq_d = CGAL::squared_distance(p, Point(x,y,z));
-      // sq_d = CGAL::sqrt(sq_d);
-      double P[3];
-      double v1[3], v2[3];
-      P[0] = p.x(); P[1] = p.y(); P[2] = p.z();
-      v_make(A, P, 3, v1);
-      v_make(A, B, 3, v2);
-      double k = v_dot(v1, v2, 3) / v_magn(v2, 3) / v_magn(v2, 3);
-
-      bool within = false;
-      if (k>=0 && k<=1)
-            within = true;
+        // FT sq_d = CGAL::squared_distance(p, Point(x,y,z));
+        // sq_d = CGAL::sqrt(sq_d);
+        double P[3];
+        double v1[3], v2[3];
+        P[0] = p.x(); P[1] = p.y(); P[2] = p.z();
+        v_make(A, P, 3, v1);
+        v_make(A, B, 3, v2);
+        double AB = v_magn(v2, 3);
+        double k = v_dot(v1, v2, 3) / AB / AB;
         
-      if (within)
-          return k * def_size;
-      else
-          return def_size;
+        double m1 = (R1 - R2) / AB;
+        
+        double pp[3] = {k*v2[0], k*v2[1], k*v2[2]};
+        double pp_dist = v_dist(pp, P, 3);
+        double localr = m1*k*AB+R2;
+        
+        m1 = (S1 - S2) / AB;
+        double localsize = m1*k*AB + S2;
+        // Check if point P lies within the 'cone'
+        if (pp_dist <= localr) {    
+            return localsize;
+        }
+        else {
+            return S2; //fabs(pp_dist - localr)/localr 
+        }
+
+            
+            
+            
     // FT sq_d_to_origin = CGAL::squared_distance(p, Point(CGAL::ORIGIN));
     // return CGAL::abs( CGAL::sqrt(sq_d_to_origin)-0.5 ) / 10. + 0.025; 
 	}
