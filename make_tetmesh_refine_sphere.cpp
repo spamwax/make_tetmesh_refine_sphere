@@ -72,7 +72,7 @@ struct Spherical_sizing_field2
     typedef Point Point_3;
     typedef Mesh_domain::Index Index;
 //  double x, y, z;
-    double r, ref_ratio, def_size;
+    double ref_ratio, def_size;
     double R1, R2, S1, S2;
     
     double A[3], B[3];
@@ -98,7 +98,7 @@ struct Spherical_sizing_field2
         m1 = (S1 - S2) / AB;
         double localsize = m1*k*AB + S2;
         // Check if point P lies within the 'cone'
-        if (pp_dist <= localr) {    
+        if (pp_dist <= localr) {
             return localsize;
         }
         else {
@@ -122,7 +122,9 @@ int main(int argc, char *argv[]) {
     std::string ifn, cfn;
     double facet_angle=25, facet_size=3.0, facet_distance=0.5,
            cell_radius_edge=3,cell_size=3.0;
-    double x = 0, y = 0, z = 0, r = 1., ref_ratio = 0.3;
+    double xa = 0, ya = 0, za = 0, r1 = 1., ref_ratio = 0.3;
+    double xb = 0, yb = 0, zb = 0, r2 = 1.;
+    double s1 = 1., s2 = 1.;
     
     bool defulatcriteria = false;
 
@@ -153,10 +155,16 @@ int main(int argc, char *argv[]) {
         cfs >> facet_distance;
         cfs >> cell_radius_edge;
         cfs >> cell_size;
-        cfs >> x;
-        cfs >> y;
-        cfs >> z;
-        cfs >> r;
+        cfs >> xa; // Point A
+        cfs >> ya;
+        cfs >> za;
+        cfs >> xb; // Point B
+        cfs >> yb;
+        cfs >> zb;
+        cfs >> r1;
+        cfs >> r2;
+        cfs >> s1;
+        cfs >> s2;
         cfs >> ref_ratio;
     }
     
@@ -182,11 +190,25 @@ int main(int argc, char *argv[]) {
     Spherical_sizing_field2 size;
     
     size.ref_ratio = ref_ratio;
-    size.r = r;
-    size.B[0] = x; size.B[1] = y; size.B[2] = z;
-    size.A[0] = x+50; size.A[1] = y+50; size.A[2] = z+50;
+    size.B[0] = xb; size.B[1] = yb; size.B[2] = zb;
+    size.A[0] = xa; size.A[1] = ya; size.A[2] = za;
     size.def_size = cell_size;
+    size.R1 = r1; size.R2 = r2;
+    size.S1 = s1; size.S2 = s2;
     
+    std::cout << "facet_angle " << facet_angle << ' ' << std::endl;
+    std::cout << "facet_size " << facet_size << ' ' << std::endl;
+    std::cout << "facet_distance " << facet_distance << ' ' << std::endl;
+    std::cout << "cell_radius_edge " << cell_radius_edge << ' ' << std::endl;
+    std::cout << "cell_size " << cell_size << ' ' << std::endl;
+    std::cout << "A: " << xa << ' ' << ya << ' ' << za << std::endl <<
+                 "B: " << xb << ' ' << yb << ' ' << zb << std::endl <<
+                 "R1: " << r1 << std::endl <<
+                 "R2: " << r2 << std::endl <<
+                 "S1: " << s1 << std::endl <<
+                 "S2: " << s2 << std::endl << 
+                 "ref_ratio: " << ref_ratio << std::endl;
+                 
     // Mesh criteria (no cell_size set)
     Facet_criteria facet_criteria(facet_angle, facet_size, facet_distance); // angle, size, approximation
     Cell_criteria cell_criteria(cell_radius_edge, size); // radius-edge ratio, size
@@ -199,13 +221,7 @@ int main(int argc, char *argv[]) {
     std::ofstream medit_file("out.mesh");
     c3t3.output_to_medit(medit_file);
     medit_file.close();
-    std::cout << facet_angle << ' ' << std::endl;
-    std::cout << facet_size << ' ' << std::endl;
-    std::cout << facet_distance << ' ' << std::endl;
-    std::cout << cell_radius_edge << ' ' << std::endl;
-    std::cout << cell_size << ' ' << std::endl;
-    std::cout << x << ' ' << y << ' ' << z << ' ' << r << std::endl;
-    std::cout << ref_ratio << std::endl;
+  
     return EXIT_SUCCESS;
     
 }
