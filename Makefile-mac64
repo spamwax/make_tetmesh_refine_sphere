@@ -18,8 +18,10 @@ MACSDK=
 
 # Paths to CGAL and boost headers
 # LDFLAGS=-lCGAL -lgmp -lmpfr -lboost_thread
-LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a \
-	$(GMPLIBS)/libgmp.a $(BOOSTLIBS)/libboost_thread.a $(LIBPTHREAD)
+# LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a \
+# 	$(GMPLIBS)/libgmp.a $(BOOSTLIBS)/libboost_thread-mt.a $(LIBPTHREAD)
+LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a \
+	$(BOOSTLIBS)/libboost_thread-mt.a $(LIBPTHREAD)
 
 # Necessary compiler flags (g++)
 CXXFLAGS=$(MACSDK) -Wall -fno-common -O3 \
