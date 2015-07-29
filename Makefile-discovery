@@ -13,24 +13,22 @@ CGALLIBS=$(HOME)/local/CGAL/3.8/lib
 GMPLIBS=/usr/lib64
 BOOSTLIBS=$(HOME)/local/lib
 LIBPTHREAD=-lpthread
-MACSDK=-isysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5
-MACSDK=
 
 # Paths to CGAL and boost headers
 #LDFLAGS=-lCGAL -lgmp -lmpfr -lboost_thread
-LDFLAGS=$(MACSDK) $(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a \
+LDFLAGS=$(CGALLIBS)/libCGAL.a $(GMPLIBS)/libmpfr.a \
 	$(GMPLIBS)/libgmp.a $(BOOSTLIBS)/libboost_thread.a $(LIBPTHREAD)
-	
+
 
 # Necessary compiler flags (g++)
-CXXFLAGS=$(MACSDK) -Wall -fno-common -O3 \
+CXXFLAGS=-Wall -fno-common -O3 \
 	-frounding-math -fno-strict-aliasing
 
 #rpath setting (this helps the final executable to easily locate
 # required libraries)
-RPATHSETTING = -Wl,-rpath,@executable_path/../lib$(OS32_64)/darwin/ 
+RPATHSETTING = -Wl,-rpath,@executable_path/../lib$(OS32_64)/darwin/
 RPATHSETTING += -Wl,-rpath,@loader_path/
-RPATHSETTING = 
+RPATHSETTING =
 
 
 
@@ -42,6 +40,6 @@ linux64: make_tetmesh_refine_sphere.o vector.o
 clean:
 	rm make_tetmesh_refine_sphere-linux64.exe make_tetmesh_refine_sphere.o \
 	    vector.o
-	
+
 .cpp$(OBJ_EXT):
 	$(CXX) $(CXXFLAGS) $<
