@@ -21,11 +21,11 @@ if ( CGAL_FOUND )
 
   include( CGAL_CreateSingleSourceCGALProgram )
 
-  create_single_source_cgal_program( "make_tetmesh_refine_sphere.cpp" )
+  create_single_source_cgal_program( "make_tetmesh_refine_sphere.cpp" "vector.cpp")
 
 else()
-  
+
     message(STATUS "This program requires the CGAL library, and will not be compiled.")
-  
+
 endif()
 
