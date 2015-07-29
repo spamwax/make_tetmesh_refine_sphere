@@ -7,13 +7,13 @@ c    routine to construct a vector from point 1 to point 2
 c
 c    written by:  Bruce Johnston, May 1991
 c
-c    parameters:   
+c    parameters:
 c         pnt1,2 - input point coordinates
 c         n - number of coordinates
 c         vec - returned vector components
 c*/
 	// double *ret = new double[n];
-	for (register int k=0; k<n; vec[k] = pnt2[k] - pnt1[k], ++k);
+	for (int k=0; k<n; vec[k] = pnt2[k] - pnt1[k], ++k);
 
 }
 //cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -23,26 +23,26 @@ c    routine to normalize a vector
 c
 c    written by:  Bruce Johnston, May 1991
 c
-c    parameters:   
+c    parameters:
 c         vec = vector to be normalized (input)
 c               normalized vector (output)
 c         n = number of vector components
-c */   
-      
+c */
+
 	int ret=OK;
 	double magvec = v_magn(vec, n);
-      
+
 	if ( fabs(magvec-0.0) < FloatTol ) {
 		magvec = FloatTol;
 		ret = BAD;
 	}
-	for (register int k=0; k<n; vec[k] /= magvec, ++k);
+	for (int k=0; k<n; vec[k] /= magvec, ++k);
 	return ret;
 }
 // cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 void v_cros(const double *vec1, const double *vec2, int n, double *prod) { //      subroutine v_cros( vec1, vec2, n, prod )
 /*c
-c    calculates the cross product of two vectors of  
+c    calculates the cross product of two vectors of
 c    dimension n (n>=3).  vec1 x vec2 = prod
 c
 c    written by:  Bruce Johnston, May 1991
@@ -60,7 +60,7 @@ c*/
       prod[0] = vec1[1]*vec2[2] - vec1[2]*vec2[1];
       prod[1] = vec1[2]*vec2[0] - vec1[0]*vec2[2];
       prod[2] = vec1[0]*vec2[1] - vec1[1]*vec2[0];
-      if (n==4)  
+      if (n==4)
 		prod[3] = 1.0;
 }
 //ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -70,10 +70,10 @@ c    calculates the magnitude of a vector of dimension n
 c    parameters:
 c         vec - the vector
 c         n   - dimension of the vector
-c*/    
+c*/
 	double sum = 0.;
 	int nn = (n>3) ? 3 : n;
-    for (register int k=0; k<nn; sum += vec[k]*vec[k], ++k);
+    for (int k=0; k<nn; sum += vec[k]*vec[k], ++k);
 	return sqrt(sum);
 }
 
@@ -88,14 +88,14 @@ c    parameters
 c         vec1,2 - the two vectors
 c              n - their dimension
 c*/
-      //real vec1(1), vec2(1), 
+      //real vec1(1), vec2(1),
 	double val=0.0;
-	register int k;	
+	int k;
 
       for (k=0;k<n;++k) {  // do 10 k=1,n
          val += vec1[k]*vec2[k];
 	}  // 10   continue
-      
+
 	return val; //v_dot = val
 }
 
@@ -110,7 +110,7 @@ double *v_add(const double *v1, const double *v2, int n) {
 		n : dimension
 */
 	double *ret = new double[n];
-	for (register int i=0; i<n; ret[i] = v1[i] + v2[i], i++)
+	for (int i=0; i<n; ret[i] = v1[i] + v2[i], i++)
 		;
 	return ret;
 }
@@ -135,7 +135,7 @@ double v_dist( const double x[], const double y[], int n )
   }
 
   value = sqrt ( value );
- 
+
   return value;
 }
 
@@ -149,7 +149,7 @@ c
 c     purpose: to compute the distance between two x, y, z points.
 c*/
    //   real    vec0(1), vec1(1)
-     // integer n, 
+     // integer n,
 	int i;
       double work;
       work = 0.0;
@@ -174,7 +174,7 @@ int     dim;               // vector dimension
 double v_angle(double vec1[], double vec2[], int degf, int dim, double zeroTol) {
 	// Cleaned up by Hamid 11/2006
 	double   mag1, mag2, dprod, cosang, angle;
-	
+
 	mag1 = v_magn(vec1, dim);
 	mag2 = v_magn(vec2, dim);
 	if (fabs(mag1-0.)<zeroTol || fabs(mag2-0.)<zeroTol) {
@@ -193,7 +193,7 @@ double v_angle(double vec1[], double vec2[], int degf, int dim, double zeroTol) 
 }
 
 /* Function to calculate the oriented 2D angle between two
-   vectors ( ccw=positive, cw=negative )  
+   vectors ( ccw=positive, cw=negative )
    Ziji, 10/29/01 */
 double v_angle3(double vec1[], double vec2[], int degf, int dim, double zeroTol) {
 /*double vec1[], vec2[];  // the input vectors
@@ -208,7 +208,7 @@ int    ideg;            // flag indicating result desired in degrees
 	return angle;
 }
 
-double angle_rad_2d (double p1[], double p2[], double p3[], int degf, double zeroTol) 
+double angle_rad_2d (double p1[], double p2[], double p3[], int degf, double zeroTol)
 /*
   Purpose:
     ANGLE_RAD_2D returns the angle in radians swept out between two rays in 2D.
@@ -244,7 +244,7 @@ double angle_rad_2d (double p1[], double p2[], double p3[], int degf, double zer
 	  value = atan2 ( y, x );
 	  if ( value < 0.0 ) {
 		  value = value + 2.0 * PI;
-    
+
 	  }
   }
   if (degf == 1)
